@@ -46,6 +46,8 @@ export const Signup = () => {
   });
 
   const onSubmit: SubmitHandler<ISignupData> = async (data) => {
+    localStorage.setItem("userEmail", data.email);
+
     try {
       const userData = await signup({
         firstName: data.firstName,
