@@ -41,6 +41,9 @@ export const Login = () => {
   });
 
   const onSubmit: SubmitHandler<ILoginData> = async (data) => {
+    // localStorage.setItem("userEmail", data.login);
+    localStorage.setItem("userEmail", data.email);
+
     try {
       const userData = await login({
         email: data.email,

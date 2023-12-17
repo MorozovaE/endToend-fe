@@ -1,28 +1,20 @@
 import { Box, Button, Input, Typography } from "@mui/material";
 import React from "react";
-import { useCreateRequestMutation } from "../../store/features/project_memberApiSlice";
+import {
+  useCreateRequestMutation,
+  useGetOutgoingRequestsQuery,
+} from "../../store/features/project_memberApiSlice";
 
 export const OutgoingRequest = () => {
   const [uuid, setUuid] = React.useState("");
 
-  const outgoingRequests = [
-    {
-      id: 1,
-      title: "Test Poject",
-      uiid: "sjdfnodsnfp",
-    },
-    {
-      id: 2,
-      title: "Test Poject2",
-      uiid: "sjdUBTVUdsnfp",
-    },
-  ];
   const [createRequest] = useCreateRequestMutation();
+  const { data, refetch } = useGetOutgoingRequestsQuery();
 
   const onCreateRequest = async () => {
-    console.log(uuid);
-    
     await createRequest(uuid).unwrap();
+    refetch();
+    setUuid("");
   };
 
   return (
@@ -40,16 +32,17 @@ export const OutgoingRequest = () => {
           />
           <Button onClick={onCreateRequest}>Send</Button>
         </Box>
-        {outgoingRequests.map((el, index) => (
-          <Box
-            mb={"5px"}
-            key={index}
-            sx={{ display: "flex", p: 0, justifyContent: "space-between" }}
-          >
-            <Typography component="span">{el.title}</Typography>{" "}
-            <Typography component="span">{el.uiid}</Typography>
-          </Box>
-        ))}
+        {data &&
+          data.map((el: any, index: number) => (
+            <Box
+              mb={"5px"}
+              key={index}
+              sx={{ display: "flex", p: 0, justifyContent: "space-between" }}
+            >
+              <Typography component="span">{el.project.title}</Typography>{" "}
+              <Typography component="span">{el.project.uuid}</Typography>
+            </Box>
+          ))}
       </Box>
     </Box>
   );

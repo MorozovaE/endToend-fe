@@ -22,6 +22,7 @@ export interface IProject {
   id: number;
   title: string;
   desc: string;
+  uuid: string;
 }
 
 export const ProjectCard = ({ project }: { project: IProject }) => {
@@ -82,6 +83,10 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
             </Box>
           </Box>
         </CardActionArea>
+        
+        <Typography variant="body2" color="text.secondary">
+                {project.uuid}
+              </Typography>
       </Card>
     </Box>
   );

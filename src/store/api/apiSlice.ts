@@ -1,4 +1,10 @@
-import { BaseQueryFn, FetchArgs, FetchBaseQueryError, createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  createApi,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import { logOut } from "../features/authSlice";
 
 const baseQuery = fetchBaseQuery({
@@ -26,7 +32,7 @@ const baseQueryWithAuth: BaseQueryFn<
   }
 
   return { data };
-}
+};
 
 export const apiSlice = createApi({
   baseQuery: baseQueryWithAuth,

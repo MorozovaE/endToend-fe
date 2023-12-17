@@ -38,6 +38,7 @@ export const ProjectHeader = () => {
           >
             endToEnd
           </Typography>
+          <Typography>{localStorage.getItem("userEmail")}</Typography>
         </Box>
         <Box>
           <Button color="inherit" onClick={handleLogout} >LOGOUT</Button>

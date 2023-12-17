@@ -1,5 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Button, Container, Grid } from "@mui/material";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useGetProjectsQuery } from "../../store/features/projectsApiSlice";
 import {
@@ -18,18 +19,29 @@ export interface IProjectData {
   desc: string;
 }
 export const ProjectList = () => {
-  const { data: projects = [], isLoading, isError } = useGetProjectsQuery();
+  const {
+    data: projects = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useGetProjectsQuery();
 
   const dialogType = useSelector(projectDialogTypeSelector);
-
+  const token = localStorage.getItem("token");
   const dispatch = useAppDispatch();
-
-  if (isLoading) return <div>loading </div>;
-  if (isError) return <div>Error</div>;
 
   const handleClickOpen = () => {
     dispatch(openCreateProjectDialog());
   };
+
+  React.useEffect(() => {
+    if (token) {
+      refetch();
+    } 
+  }, [token]);
+
+  if (isLoading) return <div>loading </div>;
+  if (isError) return <div>Error</div>;
 
   return (
     <Container sx={{ mt: 5 }}>

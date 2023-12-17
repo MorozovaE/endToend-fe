@@ -12,7 +12,43 @@ export const projectMemberApiSlice = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
+    getOutgoingRequests: builder.query<any, void>({
+      query: () => "/projectMember/outgoing",
+    }),
+    getIncomingRequests: builder.query<any, void>({
+      query: () => "/projectMember/incoming",
+    }),
+    acceptRequest: builder.mutation({
+      query: ({
+        projectId,
+        userId,
+      }: {
+        projectId: number;
+        userId: number;
+      }) => ({
+        url: `projectMember/${projectId}/${userId}`,
+        method: "PUT",
+      }),
+    }),
+    declineRequest: builder.mutation({
+      query: ({
+        projectId,
+        userId,
+      }: {
+        projectId: number;
+        userId: number;
+      }) => ({
+        url: `projectMember/${projectId}/${userId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useCreateRequestMutation } = projectMemberApiSlice;
+export const {
+  useCreateRequestMutation,
+  useGetOutgoingRequestsQuery,
+  useGetIncomingRequestsQuery,
+  useAcceptRequestMutation,
+  useDeclineRequestMutation,
+} = projectMemberApiSlice;
