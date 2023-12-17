@@ -1,3 +1,4 @@
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import {
@@ -8,8 +9,10 @@ import {
   CardActions,
   CardContent,
   IconButton,
+  Snackbar,
   Typography,
 } from "@mui/material";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useDeleteProjectMutation,
@@ -29,7 +32,13 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
   const navigate = useNavigate();
   const [deleteProject] = useDeleteProjectMutation();
   const { refetch } = useGetProjectsQuery();
+  const [open, setOpen] = React.useState(false);
 
+  const handleCopyUuid = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setOpen(true);
+    navigator.clipboard.writeText(project.uuid);
+  };
   const dispatch = useAppDispatch();
   function openProject() {
     navigate(`/board/${project.id}`);
@@ -47,6 +56,15 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
 
     await deleteProject({ id: project.id }).unwrap();
     refetch();
+  };
+
+  const defaultButtonStyles = {
+    typography: {
+      fontSize: "14px",
+    },
+    padding: "5px 3px",
+    borderRadius: 0,
+    textTransform: "none",
   };
 
   return (
@@ -69,7 +87,12 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
             </Box>
           </CardContent>
 
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             <CardActions>
               <Button size="small">Open</Button>
             </CardActions>
@@ -83,10 +106,41 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
             </Box>
           </Box>
         </CardActionArea>
-        
-        <Typography variant="body2" color="text.secondary">
-                {project.uuid}
-              </Typography>
+        <Button
+          onClick={handleCopyUuid}
+          sx={{ width: "100%", display: "block" }}
+        >
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            sx={{
+              p: "0 0 0 10px",
+              backgroundColor: "#d7d7d799",
+              borderRadius: "6px",
+            }}
+          >
+            <Snackbar
+              open={open}
+              onClose={() => setOpen(false)}
+              autoHideDuration={2000}
+              message="UUID copied to clipboard"
+            />
+
+            <Typography
+              variant="body2"
+              fontSize={"12px"}
+              fontFamily={"monospace"}
+              color="text.secondary"
+              textTransform={"none"}
+            >
+              {project.uuid}
+            </Typography>
+            <IconButton sx={{ p: "7px 10px" }} onClick={handleCopyUuid}>
+              <ContentCopyIcon sx={{ width: "20px" }} />
+            </IconButton>
+          </Box>
+        </Button>
       </Card>
     </Box>
   );

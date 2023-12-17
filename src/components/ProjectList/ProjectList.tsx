@@ -26,6 +26,8 @@ export const ProjectList = () => {
     refetch,
   } = useGetProjectsQuery();
 
+  console.log(projects);
+
   const dialogType = useSelector(projectDialogTypeSelector);
   const token = localStorage.getItem("token");
   const dispatch = useAppDispatch();
@@ -37,7 +39,7 @@ export const ProjectList = () => {
   React.useEffect(() => {
     if (token) {
       refetch();
-    } 
+    }
   }, [token]);
 
   if (isLoading) return <div>loading </div>;
