@@ -13,6 +13,7 @@ import {
   TextFieldElement,
   useForm,
 } from "react-hook-form-mui";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
   useEditProjectMutation,
@@ -28,8 +29,9 @@ import { useAppDispatch } from "../../store/store";
 import { IProjectData } from "../ProjectList/ProjectList";
 
 export const EditProjectDialog = () => {
-  const dispatch = useAppDispatch();
+  const { t } = useTranslation("dialog");
 
+  const dispatch = useAppDispatch();
   const projectId = useSelector(selectedProjectIdSelector);
   const isOpenDialog = useSelector(projectDialogOpenSelector);
 
@@ -74,7 +76,7 @@ export const EditProjectDialog = () => {
   return (
     <Dialog open={isOpenDialog} onClose={handleClose}>
       <FormProvider {...formContext}>
-        <DialogTitle>Edit project</DialogTitle>
+        <DialogTitle>{t("editProjectHeader")}</DialogTitle>
         <DialogContent>
           <FormLabel htmlFor={"title"} />
           <TextFieldElement
@@ -82,10 +84,10 @@ export const EditProjectDialog = () => {
             name="title"
             id="title"
             validation={{
-              required: "This field is requeired",
+              required: `${t("requeired")}`,
               maxLength: 30,
             }}
-            placeholder="Enter the project name"
+            placeholder={t("projectNamePlaceholder")}
             fullWidth
           />
           <FormLabel htmlFor={"desc"} />
@@ -94,18 +96,18 @@ export const EditProjectDialog = () => {
             name="desc"
             id="desc"
             margin="dense"
-            placeholder="Enter the project description"
+            placeholder={t("projectDescPlaceholder")}
             fullWidth
           />
           <DialogActions>
             <Button variant="outlined" onClick={handleClose}>
-              Close
+             {t("close")}
             </Button>
             <Button
               variant="contained"
               onClick={formContext.handleSubmit(onEditProject)}
             >
-              Save
+            {t("сохранить")}
             </Button>
           </DialogActions>
         </DialogContent>

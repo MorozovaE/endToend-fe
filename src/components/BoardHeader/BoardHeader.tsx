@@ -5,6 +5,7 @@ import { AppBar, Button, IconButton, Input, Toolbar } from "@mui/material";
 
 import Box from "@mui/material/Box";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { logOut } from "../../store/features/authSlice";
@@ -17,8 +18,11 @@ import {
 } from "../../store/features/sprintApiSlice";
 import { selectedSprintIdSelector } from "../../store/features/sprintsSlice";
 import { useAppDispatch } from "../../store/store";
+import { LangToggle } from "../LangToggle/LangToggle";
 
 export const BoardHeader = () => {
+  const { t } = useTranslation("boardPage");
+
   const { projectId } = useParams();
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = React.useState(false);
@@ -78,16 +82,8 @@ export const BoardHeader = () => {
   };
 
   return (
-    // <Box>
     <Box sx={{ display: "flex", flexGrow: 1 }}>
-      {/* fixed header "Sprint #" */}
-      <AppBar
-        position="static"
-        sx={{
-          // width: `calc(100% - ${drawerWidth}px)`,
-          // ml: `${drawerWidth}px`,
-        }}
-      >
+      <AppBar position="static">
         <Toolbar>
           <Box mr={"20px"} display={"block"}>
             {project?.title}
@@ -123,9 +119,10 @@ export const BoardHeader = () => {
             <DeleteOutlinedIcon />
           </IconButton>
 
+          <LangToggle />
           <Box>
             <Button color="inherit" onClick={handleLogout}>
-              LOGOUT
+              {t("logout")}
             </Button>
           </Box>
         </Toolbar>

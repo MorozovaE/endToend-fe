@@ -13,6 +13,7 @@ import {
   PasswordElement,
   TextFieldElement,
 } from "react-hook-form-mui";
+import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 import { regExp } from "../shared/regExp";
 import { useLoginMutation } from "../store/features/authApiSlice";
@@ -27,6 +28,7 @@ export interface ILoginData {
 export const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation("authPage");
 
   const [errMsg, setErrMsg] = useState("");
   const [login] = useLoginMutation();
@@ -76,7 +78,7 @@ export const Login = () => {
     >
       <FormContainer formContext={formContext} onSuccess={onSubmit}>
         <Typography variant="h3" mb={3}>
-          Log in
+          {t("headerLogin")}
         </Typography>
         <Grid container flexDirection={"column"}>
           <Grid item mb={3}>
@@ -87,9 +89,9 @@ export const Login = () => {
                 name={"email"}
                 type={"email"}
                 id={"email"}
-                placeholder={"Enter your email ..."}
+                placeholder={t("emailPlaceholder")}
                 validation={{
-                  required: "This field is required",
+                  required: `${t("requeired")}`,
                   pattern: {
                     value: regExp.email,
                     message: "Incorrectly entered email address",
@@ -107,9 +109,9 @@ export const Login = () => {
                 name={"password"}
                 type={"password"}
                 id={"auth-password"}
-                placeholder={"Enter you password"}
+                placeholder={t("passwordPlaceholder")}
                 validation={{
-                  required: "This field is required",
+                  required: `${t("requeired")}`,
                 }}
               />
             </Box>
@@ -118,19 +120,15 @@ export const Login = () => {
           {errMsg && <Typography>{errMsg}</Typography>}
           <Box sx={{ justifyContent: "center", display: "flex", mt: 1 }}>
             <Button
-              type={"submit"}
-              variant="contained"
-              sx={{ mr: 2, flexGrow: 1 }}
-            >
-              Log in
-            </Button>
-            <Button
               variant="outlined"
               component={NavLink}
               to="/signup"
-              sx={{ flexGrow: 1 }}
+              sx={{ mr: 2, flexGrow: 1 }}
             >
-              Sign up
+              {t("signup")}
+            </Button>
+            <Button type={"submit"} variant="contained" sx={{ flexGrow: 1 }}>
+              {t("login")}
             </Button>
           </Box>
         </Grid>

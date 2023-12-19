@@ -1,4 +1,3 @@
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import {
@@ -13,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
   useDeleteProjectMutation,
@@ -29,7 +29,10 @@ export interface IProject {
 }
 
 export const ProjectCard = ({ project }: { project: IProject }) => {
+  const { t } = useTranslation("projectsPage");
+
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [deleteProject] = useDeleteProjectMutation();
   const { refetch } = useGetProjectsQuery();
   const [open, setOpen] = React.useState(false);
@@ -39,7 +42,6 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
     setOpen(true);
     navigator.clipboard.writeText(project.uuid);
   };
-  const dispatch = useAppDispatch();
   function openProject() {
     navigate(`/board/${project.id}`);
   }
@@ -56,15 +58,6 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
 
     await deleteProject({ id: project.id }).unwrap();
     refetch();
-  };
-
-  const defaultButtonStyles = {
-    typography: {
-      fontSize: "14px",
-    },
-    padding: "5px 3px",
-    borderRadius: 0,
-    textTransform: "none",
   };
 
   return (
@@ -94,7 +87,7 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
             }}
           >
             <CardActions>
-              <Button size="small">Open</Button>
+              <Button size="small">{t("open")}</Button>
             </CardActions>
             <Box>
               <IconButton onClick={handleEditProject}>
@@ -136,9 +129,9 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
             >
               {project.uuid}
             </Typography>
-            <IconButton sx={{ p: "7px 10px" }} onClick={handleCopyUuid}>
+            {/* <IconButton sx={{ p: "7px 10px" }} onClick={handleCopyUuid}>
               <ContentCopyIcon sx={{ width: "20px" }} />
-            </IconButton>
+            </IconButton> */}
           </Box>
         </Button>
       </Card>

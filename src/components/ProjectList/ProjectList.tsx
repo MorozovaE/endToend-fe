@@ -1,6 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Button, Container, Grid } from "@mui/material";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useGetProjectsQuery } from "../../store/features/projectsApiSlice";
 import {
@@ -19,14 +20,14 @@ export interface IProjectData {
   desc: string;
 }
 export const ProjectList = () => {
+  const { t } = useTranslation("projectsPage");
+
   const {
     data: projects = [],
     isLoading,
     isError,
     refetch,
   } = useGetProjectsQuery();
-
-  console.log(projects);
 
   const dialogType = useSelector(projectDialogTypeSelector);
   const token = localStorage.getItem("token");
@@ -49,7 +50,7 @@ export const ProjectList = () => {
     <Container sx={{ mt: 5 }}>
       <Box display={"flex"} justifyContent={"end"}>
         <Button onClick={handleClickOpen}>
-          Create project
+          {t("create-project")}
           <AddIcon />
         </Button>
       </Box>

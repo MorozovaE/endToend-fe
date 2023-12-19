@@ -1,11 +1,13 @@
 import { Box, Button, Input, Typography } from "@mui/material";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   useCreateRequestMutation,
   useGetOutgoingRequestsQuery,
 } from "../../store/features/project_memberApiSlice";
 
 export const OutgoingRequest = () => {
+  const { t } = useTranslation("projectsPage");
   const [uuid, setUuid] = React.useState("");
 
   const [createRequest] = useCreateRequestMutation();
@@ -20,7 +22,7 @@ export const OutgoingRequest = () => {
   return (
     <Box flexGrow={1}>
       <Typography sx={{ mt: 5, mb: 2 }} fontSize={"22px"}>
-        Outgoing requests
+        {t("outgoing-requests")}
       </Typography>
 
       <Box>
@@ -30,7 +32,7 @@ export const OutgoingRequest = () => {
             value={uuid}
             onChange={(e) => setUuid(e.target.value)}
           />
-          <Button onClick={onCreateRequest}>Send</Button>
+          <Button onClick={onCreateRequest}>{t("send")}</Button>
         </Box>
         {data &&
           data.map((el: any, index: number) => (

@@ -27,10 +27,14 @@ function App() {
       />
       <Route path="/" element={<Navigate to="/projects" />} />
       <Route path="/board">
-        <Route path=":projectId" element={
-          <PrivateRoute>
-            <Board />
-          </PrivateRoute>} />
+        <Route
+          path=":projectId"
+          element={
+            <PrivateRoute>
+              <Board />
+            </PrivateRoute>
+          }
+        />
       </Route>
     </Routes>
   );

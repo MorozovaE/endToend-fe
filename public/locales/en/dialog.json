@@ -1,0 +1,16 @@
+{
+  "editProjectHeader": "Edit project",
+  "close": "close",
+  "save": "save",
+  "createProjectHeader": "Create new project",
+  "create": "create",
+  "createTaskHeader": "Create new task",
+  "status": "Status",
+  "sprint": "Sprint",
+  "projectNamePlaceholder": "Enter the project name",
+  "projectDescPlaceholder": "Enter the project description",
+  "taskNamePlaceholder": "Enter the task name",
+  "taskDescPlaceholder": "Enter the task description",
+  "editTaskHeader": "Edit task",
+  "requeired": "This fieald is requeired"
+}

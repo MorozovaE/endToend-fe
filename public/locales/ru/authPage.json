@@ -1,0 +1,12 @@
+{
+  "headerLogin": "Авторизоваться",
+  "headerSignup": "Зарегистрироваться",
+  "emailPlaceholder": "Введите свою почту ...",
+  "confirmPasswordPlaceholder": "Подтвердите свой пароль ...",
+  "passwordPlaceholder": "Введите свой пароль ...",
+  "login": "Войти",
+  "signup": "Зарегистрироваться",
+  "firstNamePlaceholder": "Введите свое имя ...",
+  "lastNamePlaceholder": "Введите свою фамилию ...",
+  "requeired": "Это поле обязательно"
+}

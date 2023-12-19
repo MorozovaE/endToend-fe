@@ -1,6 +1,7 @@
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { Box, Button, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import {
   useAcceptRequestMutation,
   useDeclineRequestMutation,
@@ -8,6 +9,8 @@ import {
 } from "../../store/features/project_memberApiSlice";
 
 export const IncomingRequest = () => {
+  const { t } = useTranslation("projectsPage");
+
   const { data, refetch } = useGetIncomingRequestsQuery();
 
   const [acceptRequest] = useAcceptRequestMutation();
@@ -19,7 +22,7 @@ export const IncomingRequest = () => {
   };
 
   const handleDecline = async (projectId: number, userId: number) => {
-    declineRequest({ projectId, userId });
+    await declineRequest({ projectId, userId });
 
     refetch();
   };
@@ -27,7 +30,7 @@ export const IncomingRequest = () => {
   return (
     <Box flexGrow={1} mr={7} justifyContent={"space-between"}>
       <Typography fontSize={"22px"} sx={{ mt: 5, mb: 2 }}>
-        Incoming requests
+        {t("incoming-requests")}
       </Typography>
       {data &&
         data.map((el: any, index: number) => (

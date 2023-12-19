@@ -13,6 +13,7 @@ import {
   PasswordRepeatElement,
   TextFieldElement,
 } from "react-hook-form-mui";
+import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 import { regExp } from "../shared/regExp";
 import { useSignupMutation } from "../store/features/authApiSlice";
@@ -28,6 +29,7 @@ export interface ISignupData {
 }
 
 export const Signup = () => {
+  const { t } = useTranslation("authPage");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -59,7 +61,6 @@ export const Signup = () => {
 
       dispatch(setCredentials({ token: userData.token }));
       navigate("/projects");
-      
     } catch (err) {
       console.log(err);
     }
@@ -76,7 +77,7 @@ export const Signup = () => {
     >
       <FormContainer formContext={formContext} onSuccess={onSubmit}>
         <Typography variant="h3" mb={3}>
-          Sign up
+          {t("headerSignup")}
         </Typography>
 
         <Grid container flexDirection={"column"}>
@@ -87,9 +88,9 @@ export const Signup = () => {
                 fullWidth
                 name={"firstName"}
                 id={"firstname"}
-                placeholder="Enter your firstname ..."
+                placeholder={t("firstNamePlaceholder")}
                 validation={{
-                  required: true,
+                  required: `${t("requeired")}`,
                   maxLength: 30,
                 }}
               />
@@ -104,9 +105,9 @@ export const Signup = () => {
               fullWidth
               name={"lastName"}
               id={"lastName"}
-              placeholder={"Enter your last name ..."}
+              placeholder={t("lastNamePlaceholder")}
               validation={{
-                required: true,
+                required: `${t("requeired")}`,
                 maxLength: 30,
               }}
             />
@@ -119,9 +120,9 @@ export const Signup = () => {
             fullWidth
             name={"email"}
             id={"email"}
-            placeholder={"Enter your email ..."}
+            placeholder={t("emailPlaceholder")}
             validation={{
-              required: "This field is required",
+              required: `${t("requeired")}`,
               pattern: {
                 value: regExp.email,
                 message: "Incorrectly entered email address",
@@ -142,9 +143,9 @@ export const Signup = () => {
             name={"password"}
             type={"password"}
             id={"auth-password"}
-            placeholder={"Enter you password"}
+            placeholder={t("passwordPlaceholder")}
             validation={{
-              required: "This field is required",
+              required: `${t("requeired")}`,
             }}
           />
         </Grid>
@@ -162,34 +163,30 @@ export const Signup = () => {
             name={"confirmPassword"}
             type={"password"}
             id={"confirmPassword"}
-            placeholder={"Confirm your password..."}
+            placeholder={t("confirmPasswordPlaceholder")}
             parseError={(error) => {
               if (error.type === "validate") {
                 return "Passwords must match ";
               } else {
-                return "This field is required";
+                return t("requeired");
               }
             }}
             validation={{
-              required: true,
+              required: `${t("requeired")}`,
             }}
           />
         </Grid>
         <Box sx={{ justifyContent: "center", display: "flex", mt: 3 }}>
           <Button
-            type={"submit"}
-            variant="contained"
-            sx={{ mr: 2, flexGrow: 1 }}
-          >
-            Sign up
-          </Button>
-          <Button
             variant="outlined"
             component={NavLink}
             to="/login"
-            sx={{ flexGrow: 1 }}
+            sx={{ mr: 2, flexGrow: 1 }}
           >
-            Log in
+            {t("login")}
+          </Button>
+          <Button type={"submit"} variant="contained" sx={{ flexGrow: 1 }}>
+            {t("signup")}
           </Button>
         </Box>
       </FormContainer>

@@ -1,0 +1,12 @@
+{
+  "headerLogin": "Log in",
+  "headerSignup": "Sign up",
+  "emailPlaceholder": "Enter your email ...",
+  "passwordPlaceholder": "Enter your password ...",
+  "confirmPasswordPlaceholder": "Confirm your password ...",
+  "login": "login",
+  "signup": "signup",
+  "firstNamePlaceholder": "Enter your firstName ...",
+  "lastNamePlaceholder": "Enter your lastName ...",
+  "requeired": "This fieald is requeired"
+}

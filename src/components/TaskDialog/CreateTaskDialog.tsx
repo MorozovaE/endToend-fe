@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useGetSprintsQuery } from "../../store/features/sprintApiSlice";
 import { selectedSprintIdSelector } from "../../store/features/sprintsSlice";
 import {
@@ -32,6 +33,8 @@ export interface ITask {
   desc: string;
 }
 export const CreateTaskDialog = () => {
+  const { t } = useTranslation("dialog");
+
   const socket = React.useContext(ScoketContext);
   const { projectId } = useParams();
   const selectedSprintId = useSelector(selectedSprintIdSelector);
@@ -102,30 +105,32 @@ export const CreateTaskDialog = () => {
   return (
     <Dialog open={isOpenDialog} onClose={handleClose}>
       <FormProvider {...formContext}>
-        <DialogTitle>Create new task</DialogTitle>
+        <DialogTitle>{t("createTaskHeader")}</DialogTitle>
         <DialogContent>
           <TextFieldElement
             autoFocus
             name="title"
             id="title"
             validation={{
-              required: "This field is requeired",
+              required: `${t("requeired")}`,
               maxLength: 30,
             }}
             margin="dense"
-            placeholder="Enter the project name"
+            placeholder={t("taskNamePlaceholder")}
             fullWidth
           />
           <TextFieldElement
             name="desc"
             id="desc"
             margin="dense"
-            placeholder="Enter the project description"
+            placeholder={t("taskDescPlaceholder")}
             fullWidth
           />
 
           <FormControl sx={{ mt: 2, minWidth: 120, mr: 2 }}>
-            <InputLabel id="demo-simple-select-helper-label">Status</InputLabel>
+            <InputLabel id="demo-simple-select-helper-label">
+              {t("status")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
@@ -142,7 +147,9 @@ export const CreateTaskDialog = () => {
           </FormControl>
 
           <FormControl sx={{ mt: 2, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label">Sprint</InputLabel>
+            <InputLabel id="demo-simple-select-helper-label">
+              {t("sprint")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
@@ -159,13 +166,13 @@ export const CreateTaskDialog = () => {
           </FormControl>
           <DialogActions>
             <Button variant="outlined" onClick={handleClose}>
-              Close
+              {t("close")}
             </Button>
             <Button
               variant="contained"
               onClick={formContext.handleSubmit(onCreateTask)}
             >
-              Create
+              {t("create")}
             </Button>
           </DialogActions>
         </DialogContent>

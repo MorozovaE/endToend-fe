@@ -1,6 +1,7 @@
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { Button } from "@mui/material";
 import React, { createContext } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import { selectedSprintIdSelector } from "../../store/features/sprintsSlice";
@@ -17,13 +18,15 @@ import { EditTaskDialog } from "../TaskDialog/EditTaskDialog";
 let socket = io("ws://localhost:3001", {
   autoConnect: false,
   extraHeaders: {
-    "Authorization": localStorage.getItem("token") as any
-  }
+    Authorization: localStorage.getItem("token") as any,
+  },
 });
 
 export const ScoketContext = createContext(socket);
 
 export const BoardTaskList = () => {
+  const { t } = useTranslation("boardPage");
+
   const dispatch = useAppDispatch();
   const dialogType = useSelector(taskDialogTypeSelector);
   const sprintId = useSelector(selectedSprintIdSelector);
@@ -64,7 +67,7 @@ export const BoardTaskList = () => {
       <div>
         {sprintId && (
           <Button onClick={handleClickOpen}>
-            Create Task
+            {t("createTask")}
             <AddOutlinedIcon />
           </Button>
         )}
@@ -76,7 +79,6 @@ export const BoardTaskList = () => {
           ""
         )}
         <DndMain tasks={tasks} />
-        {/* <DndDemo /> */}
       </div>
     </ScoketContext.Provider>
   );

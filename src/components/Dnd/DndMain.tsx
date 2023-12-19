@@ -23,7 +23,6 @@ export const DndMain = ({ tasks }: { tasks: Task[] }) => {
 
     const task = tasks.find((t) => t.id === taskId);
 
-
     let statusId = columns.findIndex((el) => el === newStatus);
 
     // if (newStatus) {

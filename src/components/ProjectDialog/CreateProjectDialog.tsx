@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { TextFieldElement } from "react-hook-form-mui";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
   useCreateProjectMutation,
@@ -20,6 +21,7 @@ import { useAppDispatch } from "../../store/store";
 import { IProjectData } from "../ProjectList/ProjectList";
 
 export const CreateProjectDialog = () => {
+  const { t } = useTranslation("dialog");
   const dispatch = useAppDispatch();
   const [createProject] = useCreateProjectMutation();
   const { refetch } = useGetProjectsQuery();
@@ -63,35 +65,35 @@ export const CreateProjectDialog = () => {
   return (
     <Dialog open={isOpenDialog} onClose={handleClose}>
       <FormProvider {...formContext}>
-        <DialogTitle>Create new project</DialogTitle>
+        <DialogTitle>{t("createProjectHeader")}</DialogTitle>
         <DialogContent>
           <TextFieldElement
             name="title"
             id="title"
             validation={{
-              required: "This field is requeired",
+              required: `${t("requeired")}`,
               maxLength: 30,
             }}
             margin="dense"
-            placeholder="Enter the project name"
+            placeholder={t("projectNamePlaceholder")}
             fullWidth
           />
           <TextFieldElement
             name="desc"
             id="desc"
             margin="dense"
-            placeholder="Enter the project description"
+            placeholder={t("projectDescPlaceholder")}
             fullWidth
           />
           <DialogActions>
             <Button variant="outlined" onClick={handleClose}>
-              Close
+              {t("close")}
             </Button>
             <Button
               variant="contained"
               onClick={formContext.handleSubmit(onCreateProject)}
             >
-              Create
+              {t("create")}
             </Button>
           </DialogActions>
         </DialogContent>

@@ -1,0 +1,16 @@
+{
+  "editProjectHeader": "Редактировать проект",
+  "close": "закрыть",
+  "save": "сохранить",
+  "createProjectHeader": "Создать новый проект",
+  "create": "Создать",
+  "createTaskHeader": "Создать задачу",
+  "status": "Статус",
+  "sprint": "Спринт",
+  "projectNamePlaceholder": "Введите имя проекта",
+  "projectDescPlaceholder": "Введите описание проекта",
+  "taskNamePlaceholder": "Введите имя задачи",
+  "taskDescPlaceholder": "Введите описание задачи",
+  "editTaskHeader": "Редактировать задачу",
+  "requeired": "Это поле обязательно"
+}

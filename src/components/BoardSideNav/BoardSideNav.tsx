@@ -20,6 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useCreateSprintMutation,
@@ -30,6 +31,8 @@ import { useAppDispatch } from "../../store/store";
 const drawerWidth = 240;
 
 export const BoardSideNav = () => {
+  const { t } = useTranslation("boardPage");
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { projectId } = useParams();
@@ -88,7 +91,6 @@ export const BoardSideNav = () => {
       anchor="left"
     >
       <Toolbar>
-        {/* logo */}
         <Box
           sx={{
             display: { xs: "flex", md: "flex" },
@@ -116,48 +118,34 @@ export const BoardSideNav = () => {
       </Toolbar>
       <Divider />
 
-      {/* Navigation */}
       <List>
         <ListItem disablePadding>
           <ListItemButton onClick={backToProjects}>
             <ListItemIcon>
               <ArrowBackIcon />
             </ListItemIcon>
-            <ListItemText primary={"back to Proejcts"} />
+            <ListItemText primary={t("backToProjects")} />
           </ListItemButton>
         </ListItem>
       </List>
-
-      {/* <List>
-        <ListItem disablePadding>
-          <ListItemButton to="/projects" component={NavLink}>
-            <ListItemIcon>
-              <ArrowBackIcon />
-            </ListItemIcon>
-            <ListItemText primary={"back to Proejcts"} />
-          </ListItemButton>
-        </ListItem>
-      </List> */}
       <Divider />
 
       <List>
-        {/* backlog */}
         <ListItem disablePadding>
           <ListItemButton>
             <ListItemIcon>
               <ListAltIcon />
             </ListItemIcon>
-            <ListItemText primary={"Backlog"} />
+            <ListItemText primary={t("backlog")} />
           </ListItemButton>
         </ListItem>
 
-        {/* sprints */}
         <Box
           display={"flex"}
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <ListSubheader>{`Sprints`}</ListSubheader>
+          <ListSubheader>{t("sprints")}</ListSubheader>
 
           {isOpen ? (
             <IconButton onClick={closeCreateInput}>
