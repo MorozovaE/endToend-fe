@@ -19,7 +19,7 @@ export interface ICreateSprint {
 }
 
 export interface IEditSprint extends FetchArgs {
-  id: string ;
+  id: string;
   data: ISprintData;
 }
 
@@ -64,5 +64,5 @@ export const {
   useCreateSprintMutation,
   useGetSprintQuery,
   useDeleteSprintMutation,
-  useEditSprintMutation
+  useEditSprintMutation,
 } = sprintApiSlice;

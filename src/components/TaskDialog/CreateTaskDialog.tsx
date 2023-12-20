@@ -34,14 +34,26 @@ export interface ITask {
 }
 export const CreateTaskDialog = () => {
   const { t } = useTranslation("dialog");
-
-  const socket = React.useContext(ScoketContext);
-  const { projectId } = useParams();
   const selectedSprintId = useSelector(selectedSprintIdSelector);
 
-  const { data: sprints } = useGetSprintsQuery(projectId);
+  const { projectId } = useParams();
   const [statusId, setStatusId] = React.useState("1");
-  const [sprintId, setSprintId] = React.useState(String(selectedSprintId));
+  const [sprintId, setSprintId] = React.useState(selectedSprintId);
+
+  const socket = React.useContext(ScoketContext);
+  const { data: sprints } = useGetSprintsQuery(projectId);
+  const BACKLOG_STRING = "Backlog";
+
+  const [sprintIdOrBacklog, setSprintIdOrBacklog] =
+    React.useState<string>(BACKLOG_STRING);
+
+  React.useEffect(() => {
+    if (sprintId === null) {
+      setSprintIdOrBacklog(BACKLOG_STRING);
+    } else {
+      setSprintIdOrBacklog(String(sprintId));
+    }
+  }, [sprintId]);
 
   const dispatch = useAppDispatch();
   const isOpenDialog = useSelector(taskDialogOpenSelector);
@@ -49,8 +61,15 @@ export const CreateTaskDialog = () => {
   const handleChangeStatus = (event: SelectChangeEvent) => {
     setStatusId(event.target.value);
   };
+
   const handleChangeSprint = (event: SelectChangeEvent) => {
-    setSprintId(event.target.value);
+    const value = event.target.value;
+
+    if (value === BACKLOG_STRING) {
+      setSprintId(null);
+    } else {
+      setSprintId(Number(value));
+    }
   };
 
   const formContext = useForm<ITask>({
@@ -66,16 +85,20 @@ export const CreateTaskDialog = () => {
       title: "",
       desc: "",
     });
-    setSprintId(String(selectedSprintId));
+    setSprintId(selectedSprintId);
     setStatusId("1");
   };
 
   React.useEffect(() => {
-    setSprintId(String(sprints?.[0].id));
+    const newSprintId = sprints?.[0].id;
+
+    if (newSprintId) {
+      setSprintId(newSprintId);
+    }
   }, [sprints]);
 
   React.useEffect(() => {
-    setSprintId(String(selectedSprintId));
+    setSprintId(selectedSprintId);
   }, [selectedSprintId]);
 
   const handleClose = () => {
@@ -84,14 +107,6 @@ export const CreateTaskDialog = () => {
   };
 
   const onCreateTask: SubmitHandler<IProjectData> = async (data) => {
-    const obj = {
-      title: data.title,
-      desc: data.desc,
-      projectId,
-      sprintId,
-      statusId,
-    };
-
     socket.emit("createTask", {
       title: data.title,
       desc: data.desc,
@@ -153,12 +168,13 @@ export const CreateTaskDialog = () => {
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
-              value={sprintId}
+              value={sprintIdOrBacklog}
               label="Sprints"
               onChange={handleChangeSprint}
             >
+              <MenuItem value={BACKLOG_STRING}>Backlog</MenuItem>
               {sprints?.map((sprint, index) => (
-                <MenuItem value={sprint.id} key={index}>
+                <MenuItem value={String(sprint.id)} key={index}>
                   {sprint.title}
                 </MenuItem>
               ))}

@@ -17,7 +17,7 @@ export const DndMain = ({ tasks }: { tasks: Task[] }) => {
   const socket = React.useContext(ScoketContext);
   const sprintId = useSelector(selectedSprintIdSelector);
 
-  const onDragEnd = async (result: DropResult) => {
+  const onDragEnd = (result: DropResult) => {
     const taskId = result.draggableId;
     const newStatus = result.destination?.droppableId;
 
@@ -25,7 +25,6 @@ export const DndMain = ({ tasks }: { tasks: Task[] }) => {
 
     let statusId = columns.findIndex((el) => el === newStatus);
 
-    // if (newStatus) {
     const updatedTask = {
       id: taskId,
       title: task?.title,
@@ -33,8 +32,7 @@ export const DndMain = ({ tasks }: { tasks: Task[] }) => {
       sprintId: sprintId,
       statusId: ++statusId,
     };
-    // }
-    await socket.emit("editTask", updatedTask);
+    socket.emit("editTask", updatedTask);
   };
 
   return (

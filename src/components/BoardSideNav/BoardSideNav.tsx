@@ -52,7 +52,7 @@ export const BoardSideNav = () => {
     setOpen(false);
   };
 
-  const chooseSprint = (id: number) => {
+  const chooseSprint = (id: number | null) => {
     dispatch(selectSprintId(id));
   };
 
@@ -132,7 +132,7 @@ export const BoardSideNav = () => {
 
       <List>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton onClick={() => chooseSprint(null)}>
             <ListItemIcon>
               <ListAltIcon />
             </ListItemIcon>

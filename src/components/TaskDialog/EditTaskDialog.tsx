@@ -28,29 +28,58 @@ import { useAppDispatch } from "../../store/store";
 import { ScoketContext } from "../BoardTaskList/BoardTaskList";
 import { columns } from "../Dnd/DndMain";
 import { IProjectData } from "../ProjectList/ProjectList";
+import { ITask } from "./CreateTaskDialog";
 
 export const EditTaskDialog = () => {
+  const taskId = useSelector(selectedTaskIdSelector);
   const { t } = useTranslation("dialog");
 
-  const dispatch = useAppDispatch();
+  // const t = (str: any) => {
+  //   return str
+  // }
+
   const socket = React.useContext(ScoketContext);
   const { projectId } = useParams();
-  const { data: sprints } = useGetSprintsQuery(projectId);
   const selectedSprintId = useSelector(selectedSprintIdSelector);
-  const isOpenDialog = useSelector(taskDialogOpenSelector);
 
-  const taskId = useSelector(selectedTaskIdSelector);
+  const { data: sprints } = useGetSprintsQuery(projectId);
   const [statusId, setStatusId] = React.useState("1");
-  const [sprintId, setSprintId] = React.useState(String(selectedSprintId));
+
+  // set{ 0, 1, 2, 3, 999, null } type = number | null
+  const [sprintId, setSprintId] = React.useState(selectedSprintId);
+
+  // string representation for [sprintId, setSprintId]
+  // set{ "1", "2", "3", "Backlog" }
+  const BACKLOG_STRING = "Backlog";
+  const [sprintIdOrBacklog, setSprintIdOrBacklog] =
+    React.useState<string>(BACKLOG_STRING);
+
+  React.useEffect(() => {
+    if (sprintId === null) {
+      setSprintIdOrBacklog(BACKLOG_STRING);
+    } else {
+      setSprintIdOrBacklog(String(sprintId));
+    }
+  }, [sprintId]);
+
+  const dispatch = useAppDispatch();
+  const isOpenDialog = useSelector(taskDialogOpenSelector);
 
   const handleChangeStatus = (event: SelectChangeEvent) => {
     setStatusId(event.target.value);
   };
+
   const handleChangeSprint = (event: SelectChangeEvent) => {
-    setSprintId(event.target.value);
+    const value = event.target.value;
+
+    if (value === BACKLOG_STRING) {
+      setSprintId(null);
+    } else {
+      setSprintId(Number(value));
+    }
   };
 
-  const formContext = useForm<IProjectData>({
+  const formContext = useForm<ITask>({
     defaultValues: {
       title: "",
       desc: "",
@@ -58,27 +87,43 @@ export const EditTaskDialog = () => {
     shouldUseNativeValidation: false,
   });
 
+  React.useEffect(() => {
+    if (taskId) {
+      socket.emit("getTask", taskId, (data: any) => {
+        formContext.reset({
+          title: data.title,
+          desc: data.desc,
+        });
+        setStatusId(data.status.id);
+      });
+    }
+  }, [taskId, formContext, socket]);
+
   const resetForm = () => {
     formContext.reset({
       title: "",
       desc: "",
     });
-    setSprintId(String(selectedSprintId));
+    setSprintId(selectedSprintId);
     setStatusId("1");
   };
 
-  const handleClose = () => {
-    resetForm();
-    dispatch(closeTaskDialog());
-  };
-
   React.useEffect(() => {
-    setSprintId(String(sprints?.[0].id));
+    const newSprintId = sprints?.[0].id;
+
+    if (newSprintId) {
+      setSprintId(newSprintId);
+    }
   }, [sprints]);
 
   React.useEffect(() => {
-    setSprintId(String(selectedSprintId));
+    setSprintId(selectedSprintId);
   }, [selectedSprintId]);
+
+  const handleClose = () => {
+    dispatch(closeTaskDialog());
+    resetForm();
+  };
 
   const onEditProject: SubmitHandler<IProjectData> = async (data) => {
     const updatedTask = {
@@ -146,12 +191,13 @@ export const EditTaskDialog = () => {
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
-              value={sprintId}
+              value={sprintIdOrBacklog}
               label="Sprints"
               onChange={handleChangeSprint}
             >
+              <MenuItem value={BACKLOG_STRING}>Backlog</MenuItem>
               {sprints?.map((sprint, index) => (
-                <MenuItem key={index} value={sprint.id}>
+                <MenuItem value={String(sprint.id)} key={index}>
                   {sprint.title}
                 </MenuItem>
               ))}
