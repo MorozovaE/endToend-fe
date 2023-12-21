@@ -23,6 +23,21 @@ export const LangToggle = () => {
 
   return (
     <Select
+      sx={{
+        color: "white",
+        boxShadow: "none",
+        ".MuiOutlinedInput-notchedOutline": { border: 0 },
+        "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
+          border: 0,
+        },
+        "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+          {
+            border: 0,
+          },
+        ".MuiSvgIcon-root ": {
+          fill: "white",
+        },
+      }}
       value={lang}
       onChange={(e) => {
         i18n.changeLanguage(e.target.value);

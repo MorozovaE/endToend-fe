@@ -5,7 +5,11 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
-import { selectedSprintIdSelector } from "../../store/features/sprintsSlice";
+import {
+  selectedSprintIdSelector,
+  selectedSprintLoading,
+  setSprintLoading,
+} from "../../store/features/sprintsSlice";
 import {
   openCreateTaskDialog,
   taskDialogTypeSelector,
@@ -33,6 +37,7 @@ export const BoardTaskList = () => {
   const dispatch = useAppDispatch();
   const dialogType = useSelector(taskDialogTypeSelector);
   const sprintId = useSelector(selectedSprintIdSelector);
+  const sprintLoading = useSelector(selectedSprintLoading);
   const { projectId } = useParams();
   const [tasks, setTasks] = React.useState([]);
 
@@ -53,6 +58,7 @@ export const BoardTaskList = () => {
 
     socket.on("tasks", (tasks: any) => {
       setTasks(tasks.map(convertToTask));
+      dispatch(setSprintLoading(false));
     });
   }, []);
 
@@ -60,7 +66,10 @@ export const BoardTaskList = () => {
     if (projectId) {
       socket.emit("subscribeToSprint", { sprintId, projectId });
 
-      socket.emit("getTasks", { sprintId, projectId });
+      socket.emit("getTasks", { sprintId, projectId }, (tasks: any) => {
+        setTasks(tasks.map(convertToTask));
+        dispatch(setSprintLoading(false));
+      });
     }
   }, [sprintId]);
 
@@ -69,25 +78,45 @@ export const BoardTaskList = () => {
   };
   return (
     <ScoketContext.Provider value={socket}>
-      <Box>
-        <Button onClick={handleClickOpen}>
-          {t("createTask")}
-          <AddOutlinedIcon />
-        </Button>
-
-        {dialogType === "create" ? (
-          <Suspense fallback={<Loader />}>
-            <CreateTaskDialog />
-          </Suspense>
-        ) : dialogType === "edit" ? (
-          <Suspense fallback={<Loader />}>
-            <EditTaskDialog />
-          </Suspense>
-        ) : (
-          ""
-        )}
-        {sprintId && <DndMain tasks={tasks} />}
-        {!sprintId && <BacklogList tasks={tasks} />}
+      <Box
+        sx={{
+          p: "15px 15px",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+          }}
+        >
+          <Button onClick={handleClickOpen}>
+            {t("createTask")}
+            <AddOutlinedIcon />
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+          }}
+        >
+          {dialogType === "create" ? (
+            <Suspense fallback={<Loader />}>
+              <CreateTaskDialog />
+            </Suspense>
+          ) : dialogType === "edit" ? (
+            <Suspense fallback={<Loader />}>
+              <EditTaskDialog />
+            </Suspense>
+          ) : (
+            ""
+          )}
+          {sprintLoading ? (
+            <Loader />
+          ) : sprintId ? (
+            <DndMain tasks={tasks} setTasks={setTasks} />
+          ) : (
+            <BacklogList tasks={tasks} />
+          )}
+        </Box>
       </Box>
     </ScoketContext.Provider>
   );

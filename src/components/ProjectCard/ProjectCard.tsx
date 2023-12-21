@@ -1,3 +1,4 @@
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import {
@@ -63,7 +64,7 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
   return (
     <Box>
       <Card sx={{ maxWidth: 345, pt: 2, pl: 2, pb: 1, pr: 2 }}>
-        <CardActionArea onClick={openProject} component="a">
+        <CardActionArea onClick={openProject} component="a" sx={{mb:"10px"}}>
           <CardContent>
             <Box>
               <Typography
@@ -99,18 +100,23 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
             </Box>
           </Box>
         </CardActionArea>
-        <Button
-          onClick={handleCopyUuid}
-          sx={{ width: "100%", display: "block" }}
+        <Box
+          sx={{ width: "100%", display: "flex", justifyContent: "center" }}
         >
-          <Box
-            display={"flex"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
+          <Button
+            onClick={handleCopyUuid}
             sx={{
               p: "0 0 0 10px",
               backgroundColor: "#d7d7d799",
               borderRadius: "6px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              color: "rgba(0, 0, 0, 0.54)",
+
+              '&:hover': {
+                backgroundColor: "#d7d7d799",
+             },
             }}
           >
             <Snackbar
@@ -129,11 +135,9 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
             >
               {project.uuid}
             </Typography>
-            {/* <IconButton sx={{ p: "7px 10px" }} onClick={handleCopyUuid}>
-              <ContentCopyIcon sx={{ width: "20px" }} />
-            </IconButton> */}
-          </Box>
-        </Button>
+              <ContentCopyIcon sx={{ width: "20px", p: "7px 10px" }} />
+          </Button>
+        </Box>
       </Card>
     </Box>
   );

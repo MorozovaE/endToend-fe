@@ -21,12 +21,17 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useCreateSprintMutation,
   useGetSprintsQuery,
 } from "../../store/features/sprintApiSlice";
-import { selectSprintId } from "../../store/features/sprintsSlice";
+import {
+  selectSprintId,
+  selectedSprintIdSelector,
+  setSprintLoading,
+} from "../../store/features/sprintsSlice";
 import { useAppDispatch } from "../../store/store";
 const drawerWidth = 240;
 
@@ -38,14 +43,9 @@ export const BoardSideNav = () => {
   const { projectId } = useParams();
   const [isOpen, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState("");
+  const selectedSprint = useSelector(selectedSprintIdSelector);
   const { data: sprints, refetch } = useGetSprintsQuery(projectId);
   const [createSprint] = useCreateSprintMutation();
-
-  React.useEffect(() => {
-    if (sprints) {
-      dispatch(selectSprintId(sprints[0]?.id));
-    }
-  }, [sprints]);
 
   const closeCreateInput = () => {
     setTitle("");
@@ -53,6 +53,9 @@ export const BoardSideNav = () => {
   };
 
   const chooseSprint = (id: number | null) => {
+    if (id === null || selectedSprint === null) {
+      dispatch(setSprintLoading(true));
+    }
     dispatch(selectSprintId(id));
   };
 

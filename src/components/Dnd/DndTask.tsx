@@ -35,7 +35,7 @@ export const DndTask = ({ task, index }: { task: Task; index: number }) => {
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <Card
           sx={{
-            maxWidth: "350px",
+            width: "80%",
             height: 50,
             p: 3,
             m: 2,

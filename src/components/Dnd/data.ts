@@ -17,6 +17,11 @@ export const stringToStatus: Record<string, TaskStatus> = {
   IN_PROGRESS: TaskStatus.IN_PROGRESS,
   DONE: TaskStatus.DONE,
 };
+export const statusIdToStatus: Record<number, TaskStatus> = {
+  1: TaskStatus.TODO,
+  2: TaskStatus.IN_PROGRESS,
+  3: TaskStatus.DONE,
+};
 
 function getTask(list: any): Task {
   return {

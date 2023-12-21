@@ -5,7 +5,7 @@ import {
   Button,
   Container,
   Toolbar,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { logOut } from "../../store/features/authSlice";

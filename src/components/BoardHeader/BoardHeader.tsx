@@ -1,7 +1,14 @@
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { AppBar, Button, IconButton, Input, Toolbar } from "@mui/material";
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Input,
+  Toolbar,
+  Typography
+} from "@mui/material";
 
 import Box from "@mui/material/Box";
 import React from "react";
@@ -82,51 +89,80 @@ export const BoardHeader = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <Box mr={"20px"} display={"block"}>
-            {project?.title}
-          </Box>
+    <Box sx={{ display: "flex", flexGrow: 1, width: "100%"}}>
+      {/* <Container sx={{ width: "100%" }}> */}
+        <AppBar position="static">
+          <Toolbar>
+            <Box
+              mr={"20px"}
+              display={"block"}
+              sx={{
+                display: { xs: "flex", md: "flex" },
+                mr: 1,
+                alignItems: "strech",
+                flexGrow: 1,
+              }}
+            >
+              <Box sx={{ mr: "20px", boxSizing: "border-box"}}>
+                <Typography fontSize="11px" color="#ffffff42">Project:</Typography>
+                <Typography fontSize="16px">{project?.title}</Typography>
+              </Box>
+              
+             <Box sx={{ mr: "20px", boxSizing: "border-box"}}>
+              
 
-          {isEditing ? (
-            <Input
-              sx={{ width: "200px" }}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              autoFocus
-              // onBlur={handleEdit}
-            />
-          ) : (
-            <Box display={"flex"} alignItems={"center"}>
-              <Box>{title}</Box>
-              <IconButton
-                sx={{ display: "inline-block" }}
-                onClick={() => setIsEditing(true)}
-              >
-                <EditOutlinedIcon />
-              </IconButton>
+              {selectedSprintId && <Typography fontSize="11px" color="#ffffff42">Sprint:</Typography>} 
+                {selectedSprintId &&
+                  (isEditing ? (
+                    <Input
+                      sx={{
+                        border: 0,
+                        borderBottom: "1px solid white",
+                        "&&&:before": {
+                          borderBottom: "none",
+                        },
+                        "&&:after": {
+                          borderBottom: "none",
+                        },
+                        color: 'white'
+                      }}
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      autoFocus
+                    />
+                  ) : (
+                    <Box display={"flex"} alignItems={"center"}>
+                      <Box>{title}</Box>
+                      <IconButton
+                        sx={{ color: "white", p: "0", ml: "16px" }}
+                        onClick={() => setIsEditing(true)}
+                      >
+                        <EditOutlinedIcon  sx={{ p: "0", fontSize:"1.2rem" }}  />
+                      </IconButton>
+                      <IconButton sx={{ color: "white", p: "0", ml: "8px" }} onClick={handleDelete}>
+                        <DeleteOutlinedIcon  sx={{ p: "0", fontSize:"1.2rem" }} />
+                      </IconButton>
+                    </Box>
+                  ))}
+                {isEditing && (
+                  <>
+                    <IconButton sx={{ p: "0" }} onClick={handleEdit}>
+                      <CheckOutlinedIcon sx={{ color: "white", p: "0" }} />
+                    </IconButton>
+                  </>
+                )}
+              </Box>
             </Box>
-          )}
-          {isEditing && (
-            <>
-              <IconButton onClick={handleEdit}>
-                <CheckOutlinedIcon />
-              </IconButton>
-            </>
-          )}
-          <IconButton onClick={handleDelete}>
-            <DeleteOutlinedIcon />
-          </IconButton>
 
-          <LangToggle />
-          <Box>
-            <Button color="inherit" onClick={handleLogout}>
-              {t("logout")}
-            </Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
+            <LangToggle />
+            <Box>
+              <Button color="inherit" onClick={handleLogout}>
+                {t("logout")}
+              </Button>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      {/* </Container> */}
     </Box>
   );
 };

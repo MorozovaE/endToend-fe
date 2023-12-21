@@ -1,12 +1,14 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 interface SprintState {
   selectedSprintId: number | null;
+  sprintLoading: boolean;
 }
 
 const initialState: SprintState = {
   selectedSprintId: null,
+  sprintLoading: false,
 };
 
 const sprintSlice = createSlice({
@@ -15,6 +17,9 @@ const sprintSlice = createSlice({
   reducers: {
     selectSprintId(state, action) {
       state.selectedSprintId = action.payload;
+    },
+    setSprintLoading(state, action: PayloadAction<boolean>) {
+      state.sprintLoading = action.payload;
     },
   },
 });
@@ -26,6 +31,11 @@ export const selectedSprintIdSelector = createSelector(
   (s) => s.selectedSprintId
 );
 
-export const { selectSprintId } = sprintSlice.actions;
+export const selectedSprintLoading = createSelector(
+  sprintsState,
+  (s) => s.sprintLoading
+);
+
+export const { selectSprintId, setSprintLoading } = sprintSlice.actions;
 
 export default sprintSlice.reducer;

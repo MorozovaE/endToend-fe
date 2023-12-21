@@ -21,7 +21,6 @@ export const DndColumn = ({
       sx={{
         bgcolor: "#e6e6e6",
         p: 3,
-        m: 2,
         height: "78vh",
         width: "450px",
         overflow: "hidden",
@@ -40,7 +39,7 @@ export const DndColumn = ({
         {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
           <Box
             ref={provided.innerRef}
-            sx={{ overflow: "auto", height: "78vh" }}
+            sx={{ overflow: "auto", height: "78vh", width: "100%" }}
           >
             {tasks.map((task, taskIndex) => (
               <DndTask task={task} index={taskIndex} key={task.id} />
