@@ -53,7 +53,11 @@ export const BoardSideNav = () => {
   };
 
   const chooseSprint = (id: number | null) => {
-    if (id === null || selectedSprint === null) {
+    // if go FROM or TO backlog (but not both)
+    if (
+      (id === null || selectedSprint === null) &&
+      !(id === null && selectedSprint === null)
+    ) {
       dispatch(setSprintLoading(true));
     }
     dispatch(selectSprintId(id));

@@ -1,6 +1,5 @@
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-
 import { Box, Card, IconButton, Typography } from "@mui/material";
 import React from "react";
 import {
@@ -9,6 +8,7 @@ import {
   DraggableStateSnapshot,
 } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { selectedSprintIdSelector } from "../../store/features/sprintsSlice";
 import { openEditTaskDialog } from "../../store/features/tasksDialogSlice";
 import { useAppDispatch } from "../../store/store";
@@ -19,15 +19,16 @@ export const DndTask = ({ task, index }: { task: Task; index: number }) => {
   const dispatch = useAppDispatch();
   const socket = React.useContext(ScoketContext);
   const sprintId = useSelector(selectedSprintIdSelector);
+  const { projectId } = useParams();
 
   const handleEditTask = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     dispatch(openEditTaskDialog({ id: task.id }));
   };
 
-  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    await socket.emit("deleteTask", {taskId: task.id, sprintId});
+    socket.emit("deleteTask", {taskId: task.id, sprintId});
   };
 
   return (

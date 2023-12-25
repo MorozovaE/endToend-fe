@@ -7,7 +7,7 @@ import {
   IconButton,
   Input,
   Toolbar,
-  Typography
+  Typography,
 } from "@mui/material";
 
 import Box from "@mui/material/Box";
@@ -23,7 +23,10 @@ import {
   useGetSprintQuery,
   useGetSprintsQuery,
 } from "../../store/features/sprintApiSlice";
-import { selectedSprintIdSelector } from "../../store/features/sprintsSlice";
+import {
+  selectSprintId,
+  selectedSprintIdSelector,
+} from "../../store/features/sprintsSlice";
 import { useAppDispatch } from "../../store/store";
 import { LangToggle } from "../LangToggle/LangToggle";
 
@@ -64,6 +67,7 @@ export const BoardHeader = () => {
       await deleteSprint({ id: sprint.id }).unwrap();
       refetchSprints();
       setTitle("");
+      dispatch(selectSprintId(null));
     } catch (err) {
       console.log(err);
     }
@@ -89,80 +93,85 @@ export const BoardHeader = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexGrow: 1, width: "100%"}}>
-      {/* <Container sx={{ width: "100%" }}> */}
-        <AppBar position="static">
-          <Toolbar>
-            <Box
-              mr={"20px"}
-              display={"block"}
-              sx={{
-                display: { xs: "flex", md: "flex" },
-                mr: 1,
-                alignItems: "strech",
-                flexGrow: 1,
-              }}
-            >
-              <Box sx={{ mr: "20px", boxSizing: "border-box"}}>
-                <Typography fontSize="11px" color="#ffffff42">Project:</Typography>
-                <Typography fontSize="16px">{project?.title}</Typography>
-              </Box>
-              
-             <Box sx={{ mr: "20px", boxSizing: "border-box"}}>
-              
+    <Box sx={{ display: "flex", flexGrow: 1, width: "100%" }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Box
+            mr={"20px"}
+            display={"block"}
+            sx={{
+              display: { xs: "flex", md: "flex" },
+              mr: 1,
+              alignItems: "strech",
+              flexGrow: 1,
+            }}
+          >
+            <Box sx={{ mr: "20px", boxSizing: "border-box" }}>
+              <Typography fontSize="11px" color="#ffffff42">
+                Project:
+              </Typography>
+              <Typography fontSize="16px">{project?.title}</Typography>
+            </Box>
 
-              {selectedSprintId && <Typography fontSize="11px" color="#ffffff42">Sprint:</Typography>} 
-                {selectedSprintId &&
-                  (isEditing ? (
-                    <Input
-                      sx={{
-                        border: 0,
-                        borderBottom: "1px solid white",
-                        "&&&:before": {
-                          borderBottom: "none",
-                        },
-                        "&&:after": {
-                          borderBottom: "none",
-                        },
-                        color: 'white'
-                      }}
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                      autoFocus
-                    />
-                  ) : (
-                    <Box display={"flex"} alignItems={"center"}>
-                      <Box>{title}</Box>
-                      <IconButton
-                        sx={{ color: "white", p: "0", ml: "16px" }}
-                        onClick={() => setIsEditing(true)}
-                      >
-                        <EditOutlinedIcon  sx={{ p: "0", fontSize:"1.2rem" }}  />
-                      </IconButton>
-                      <IconButton sx={{ color: "white", p: "0", ml: "8px" }} onClick={handleDelete}>
-                        <DeleteOutlinedIcon  sx={{ p: "0", fontSize:"1.2rem" }} />
-                      </IconButton>
-                    </Box>
-                  ))}
-                {isEditing && (
-                  <>
-                    <IconButton sx={{ p: "0" }} onClick={handleEdit}>
-                      <CheckOutlinedIcon sx={{ color: "white", p: "0" }} />
+            <Box sx={{ mr: "20px", boxSizing: "border-box" }}>
+              {selectedSprintId && (
+                <Typography fontSize="11px" color="#ffffff42">
+                  Sprint:
+                </Typography>
+              )}
+              {selectedSprintId &&
+                (isEditing ? (
+                  <Input
+                    sx={{
+                      border: 0,
+                      borderBottom: "1px solid white",
+                      "&&&:before": {
+                        borderBottom: "none",
+                      },
+                      "&&:after": {
+                        borderBottom: "none",
+                      },
+                      color: "white",
+                    }}
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    autoFocus
+                  />
+                ) : (
+                  <Box display={"flex"} alignItems={"center"}>
+                    <Box>{title}</Box>
+                    <IconButton
+                      sx={{ color: "white", p: "0", ml: "16px" }}
+                      onClick={() => setIsEditing(true)}
+                    >
+                      <EditOutlinedIcon sx={{ p: "0", fontSize: "1.2rem" }} />
                     </IconButton>
-                  </>
-                )}
-              </Box>
+                    <IconButton
+                      sx={{ color: "white", p: "0", ml: "8px" }}
+                      onClick={handleDelete}
+                    >
+                      <DeleteOutlinedIcon sx={{ p: "0", fontSize: "1.2rem" }} />
+                    </IconButton>
+                  </Box>
+                ))}
+              {isEditing && (
+                <>
+                  <IconButton sx={{ p: "0" }} onClick={handleEdit}>
+                    <CheckOutlinedIcon sx={{ color: "white", p: "0" }} />
+                  </IconButton>
+                </>
+              )}
             </Box>
+          </Box>
 
-            <LangToggle />
-            <Box>
-              <Button color="inherit" onClick={handleLogout}>
-                {t("logout")}
-              </Button>
-            </Box>
-          </Toolbar>
-        </AppBar>
-      {/* </Container> */}
+          <LangToggle />
+          <Box>
+            <Button color="inherit" onClick={handleLogout}>
+              {t("logout")}
+            </Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
     </Box>
   );
 };
