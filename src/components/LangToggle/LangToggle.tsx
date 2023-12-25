@@ -2,15 +2,14 @@ import { MenuItem, Select } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+interface Locales {
+  [language: string]: {
+    title: string;
+  };
+}
 export const LangToggle = () => {
   const { i18n } = useTranslation();
   const [lang, setLang] = React.useState(i18n.language);
-
-  interface Locales {
-    [language: string]: {
-      title: string;
-    };
-  }
 
   const locales: Locales = {
     en: {

@@ -5,7 +5,7 @@ import {
   Button,
   Container,
   Toolbar,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { logOut } from "../../store/features/authSlice";
@@ -18,21 +18,6 @@ export const ProjectHeader = () => {
 
   const handleLogout = () => {
     dispatch(logOut());
-  };
-
-  interface Locales {
-    [language: string]: {
-      title: string;
-    };
-  }
-
-  const locales: Locales = {
-    en: {
-      title: "English",
-    },
-    ru: {
-      title: "Русский",
-    },
   };
 
   return (
