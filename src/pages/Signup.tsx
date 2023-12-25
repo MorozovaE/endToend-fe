@@ -15,6 +15,7 @@ import {
 } from "react-hook-form-mui";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
+import { AuthHeader } from "../components/AuthHeader/AuthHeader";
 import { regExp } from "../shared/regExp";
 import { useSignupMutation } from "../store/features/authApiSlice";
 import { setCredentials } from "../store/features/authSlice";
@@ -75,6 +76,7 @@ export const Signup = () => {
         marginTop: "170px",
       }}
     >
+      <AuthHeader />
       <FormContainer formContext={formContext} onSuccess={onSubmit}>
         <Typography variant="h3" mb={3}>
           {t("headerSignup")}
