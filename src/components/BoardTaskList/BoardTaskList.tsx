@@ -56,10 +56,16 @@ export const BoardTaskList = () => {
   React.useEffect(() => {
     socket.connect();
 
-    socket.on("tasks", (tasks: any) => {
+    const onGetTasks = (tasks: any) => {
       setTasks(tasks.map(convertToTask));
       dispatch(setSprintLoading(false));
-    });
+    };
+    socket.on("tasks", onGetTasks);
+
+    return () => {
+      socket.off("tasks", onGetTasks);
+      socket.disconnect();
+    };
   }, []);
 
   React.useEffect(() => {
