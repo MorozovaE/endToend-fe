@@ -50,7 +50,7 @@ export const Signup = () => {
 
   const onSubmit: SubmitHandler<ISignupData> = async (data) => {
     localStorage.setItem("userEmail", data.email);
-
+    
     try {
       const userData = await signup({
         firstName: data.firstName,
@@ -92,8 +92,13 @@ export const Signup = () => {
                 id={"firstname"}
                 placeholder={t("firstNamePlaceholder")}
                 validation={{
-                  required: `${t("requeired")}`,
+                  required: true,
                   maxLength: 30,
+                }}
+                parseError={(error) => {
+                  if (error.type === "required") {
+                    return t("required");
+                  }
                 }}
               />
             </Box>
@@ -109,8 +114,13 @@ export const Signup = () => {
               id={"lastName"}
               placeholder={t("lastNamePlaceholder")}
               validation={{
-                required: `${t("requeired")}`,
+                required: true,
                 maxLength: 30,
+              }}
+              parseError={(error) => {
+                if (error.type === "required") {
+                  return t("required");
+                }
               }}
             />
           </Box>
@@ -124,11 +134,18 @@ export const Signup = () => {
             id={"email"}
             placeholder={t("emailPlaceholder")}
             validation={{
-              required: `${t("requeired")}`,
+              required: true,
               pattern: {
                 value: regExp.email,
-                message: "Incorrectly entered email address",
+                message: `${t("incorrectInputEmail")}`,
               },
+            }}
+            parseError={(error) => {
+              if (error.type === "required") {
+                return t("required");
+              } else {
+                return t("incorrectInputEmail");
+              }
             }}
           />
         </Grid>
@@ -147,7 +164,12 @@ export const Signup = () => {
             id={"auth-password"}
             placeholder={t("passwordPlaceholder")}
             validation={{
-              required: `${t("requeired")}`,
+              required: true,
+            }}
+            parseError={(error) => {
+              if (error.type === "required") {
+                return t("required");
+              }
             }}
           />
         </Grid>
@@ -167,14 +189,14 @@ export const Signup = () => {
             id={"confirmPassword"}
             placeholder={t("confirmPasswordPlaceholder")}
             parseError={(error) => {
-              if (error.type === "validate") {
-                return "Passwords must match ";
-              } else {
-                return t("requeired");
+              if (error.type === "required") {
+                return t("required");
+              } else if (error.type === "validate") {
+                return t("passwordMismatch");
               }
             }}
             validation={{
-              required: `${t("requeired")}`,
+              required: true,
             }}
           />
         </Grid>

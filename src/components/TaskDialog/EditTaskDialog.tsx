@@ -34,22 +34,12 @@ export const EditTaskDialog = () => {
   const taskId = useSelector(selectedTaskIdSelector);
   const { t } = useTranslation("dialog");
 
-  // const t = (str: any) => {
-  //   return str
-  // }
-
   const socket = React.useContext(ScoketContext);
   const { projectId } = useParams();
   const selectedSprintId = useSelector(selectedSprintIdSelector);
-
   const { data: sprints } = useGetSprintsQuery(projectId);
   const [statusId, setStatusId] = React.useState("1");
-
-  // set{ 0, 1, 2, 3, 999, null } type = number | null
   const [sprintId, setSprintId] = React.useState(selectedSprintId);
-
-  // string representation for [sprintId, setSprintId]
-  // set{ "1", "2", "3", "Backlog" }
   const BACKLOG_STRING = "Backlog";
   const [sprintIdOrBacklog, setSprintIdOrBacklog] =
     React.useState<string>(BACKLOG_STRING);
@@ -107,14 +97,6 @@ export const EditTaskDialog = () => {
     setSprintId(selectedSprintId);
     setStatusId("1");
   };
-
-  React.useEffect(() => {
-    const newSprintId = sprints?.[0].id;
-
-    if (newSprintId) {
-      setSprintId(newSprintId);
-    }
-  }, [sprints]);
 
   React.useEffect(() => {
     setSprintId(selectedSprintId);

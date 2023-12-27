@@ -25,13 +25,13 @@ const baseQueryWithAuth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  const { error, data } = await baseQuery(args, api, extraOptions);
+  const res = await baseQuery(args, api, extraOptions);
 
-  if (error?.status === 401) {
+  if (res?.error?.status === 401) {
     api.dispatch(logOut());
   }
 
-  return { data };
+  return res;
 };
 
 export const apiSlice = createApi({

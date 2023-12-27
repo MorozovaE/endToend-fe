@@ -1,6 +1,7 @@
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import PersonIcon from "@mui/icons-material/Person";
 import {
   Box,
   Button,
@@ -22,11 +23,21 @@ import {
 import { openEditProjectDialog } from "../../store/features/projectsSlice";
 import { useAppDispatch } from "../../store/store";
 
+export interface IRole {
+  id: number;
+  name: string;
+}
+export interface IProjectRole {
+  id: number;
+  role: IRole;
+}
+
 export interface IProject {
   id: number;
   title: string;
   desc: string;
   uuid: string;
+  projectMembers: IProjectRole[];
 }
 
 export const ProjectCard = ({ project }: { project: IProject }) => {
@@ -38,6 +49,7 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
   const { refetch } = useGetProjectsQuery();
   const [open, setOpen] = React.useState(false);
 
+  const roleName = project.projectMembers[0].role.name;
   const handleCopyUuid = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     setOpen(true);
@@ -64,20 +76,41 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
   return (
     <Box>
       <Card sx={{ maxWidth: 345, pt: 2, pl: 2, pb: 1, pr: 2 }}>
-        <CardActionArea onClick={openProject} component="a" sx={{mb:"10px"}}>
+        <CardActionArea onClick={openProject} component="a" sx={{ mb: "10px" }}>
           <CardContent>
-            <Box>
-              <Typography
-                fontSize={"18px"}
-                gutterBottom
-                variant="h5"
-                component="div"
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box>
+                <Typography
+                  fontSize={"18px"}
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                >
+                  {project.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {project.desc}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "inline-flex",
+                  backgroundColor:
+                    roleName === "GUEST" ? "#0080ff57" : "#9ddf72ba",
+                  p: "3px",
+                  pr: "10px",
+                  borderRadius: "6px",
+                }}
               >
-                {project.title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {project.desc}
-              </Typography>
+                <PersonIcon sx={{ p: "0", fontSize: "1.1rem" }} />
+                <Typography sx={{ fontSize: "14px" }}>{roleName}</Typography>
+              </Box>
             </Box>
           </CardContent>
 
@@ -100,9 +133,7 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
             </Box>
           </Box>
         </CardActionArea>
-        <Box
-          sx={{ width: "100%", display: "flex", justifyContent: "center" }}
-        >
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
           <Button
             onClick={handleCopyUuid}
             sx={{
@@ -114,9 +145,9 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
               alignItems: "center",
               color: "rgba(0, 0, 0, 0.54)",
 
-              '&:hover': {
+              "&:hover": {
                 backgroundColor: "#d7d7d799",
-             },
+              },
             }}
           >
             <Snackbar
@@ -135,7 +166,7 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
             >
               {project.uuid}
             </Typography>
-              <ContentCopyIcon sx={{ width: "20px", p: "7px 10px" }} />
+            <ContentCopyIcon sx={{ width: "20px", p: "7px 10px" }} />
           </Button>
         </Box>
       </Card>

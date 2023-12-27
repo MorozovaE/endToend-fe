@@ -4,7 +4,7 @@ import {
   Container,
   FormLabel,
   Grid,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -44,7 +44,6 @@ export const Login = () => {
   });
 
   const onSubmit: SubmitHandler<ILoginData> = async (data) => {
-    // localStorage.setItem("userEmail", data.login);
     localStorage.setItem("userEmail", data.email);
 
     try {
@@ -53,9 +52,14 @@ export const Login = () => {
         password: data.password,
       }).unwrap();
 
-      dispatch(setCredentials({ token: userData.token }));
-      navigate("/projects");
+      if (userData) {
+        dispatch(setCredentials({ token: userData.token }));
+        navigate("/projects");
+      }
+      
     } catch (err: any) {
+      console.log(err);
+      
       if (!err?.data) {
         setErrMsg("No Server Response");
       } else if (err.data?.statusCode === 400) {
@@ -93,11 +97,18 @@ export const Login = () => {
                 id={"email"}
                 placeholder={t("emailPlaceholder")}
                 validation={{
-                  required: `${t("requeired")}`,
+                  required: t("required"),
                   pattern: {
                     value: regExp.email,
-                    message: "Incorrectly entered email address",
+                    message: `${t("incorrectInputEmail")}`,
                   },
+                }}
+                parseError={(error) => {
+                  if (error.type === "required") {
+                    return t("required");
+                  } else {
+                    return t("incorrectInputEmail");
+                  }
                 }}
               />
             </Box>
@@ -113,7 +124,12 @@ export const Login = () => {
                 id={"auth-password"}
                 placeholder={t("passwordPlaceholder")}
                 validation={{
-                  required: `${t("requeired")}`,
+                  required: t("required"),
+                }}
+                parseError={(error) => {
+                  if (error.type === "required") {
+                    return t("required");
+                  }
                 }}
               />
             </Box>

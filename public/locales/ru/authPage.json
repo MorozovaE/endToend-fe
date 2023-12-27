@@ -8,5 +8,7 @@
   "signup": "Зарегистрироваться",
   "firstNamePlaceholder": "Введите свое имя ...",
   "lastNamePlaceholder": "Введите свою фамилию ...",
-  "requeired": "Это поле обязательно"
+  "required": "Это поле обязательно",
+  "incorrectInputEmail": "Неверно введен адрес электронной почты",
+  "passwordMismatch": "Пароли должны совпадать"
 }

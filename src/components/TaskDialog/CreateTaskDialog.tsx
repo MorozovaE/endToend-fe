@@ -90,14 +90,6 @@ export const CreateTaskDialog = () => {
   };
 
   React.useEffect(() => {
-    const newSprintId = sprints?.[0].id;
-
-    if (newSprintId) {
-      setSprintId(newSprintId);
-    }
-  }, [sprints]);
-
-  React.useEffect(() => {
     setSprintId(selectedSprintId);
   }, [selectedSprintId]);
 

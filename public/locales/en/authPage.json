@@ -8,5 +8,7 @@
   "signup": "signup",
   "firstNamePlaceholder": "Enter your firstName ...",
   "lastNamePlaceholder": "Enter your lastName ...",
-  "requeired": "This fieald is requeired"
+  "required": "This field is requeired",
+  "incorrectInputEmail": "Incorrectly entered email address",
+  "passwordMismatch": "Passwords must match"
 }
