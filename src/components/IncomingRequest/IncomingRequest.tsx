@@ -29,7 +29,7 @@ export const IncomingRequest = () => {
 
   return (
     <Box flexGrow={1} mr={7} justifyContent={"space-between"}>
-      <Typography fontSize={"22px"} sx={{ mt: 5, mb: 2 }}>
+      <Typography variant="h2" sx={{ mt: 5, mb: 2 }}>
         {t("incoming-requests")}
       </Typography>
       {data &&

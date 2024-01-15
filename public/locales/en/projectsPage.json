@@ -4,5 +4,6 @@
   "open": "open",
   "incoming-requests": "Incoming requests",
   "outgoing-requests": "Outgoing requests",
-  "send": "send"
+  "send": "send",
+  "header": "My Projects"
 }

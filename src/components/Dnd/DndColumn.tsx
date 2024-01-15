@@ -16,6 +16,7 @@ export const DndColumn = ({
   tasks: Task[];
   index: number;
 }) => {
+
   return (
     <Box
       sx={{
@@ -27,9 +28,8 @@ export const DndColumn = ({
       }}
     >
       <Typography
-        fontSize={"24px"}
         gutterBottom
-        variant="h2"
+        variant="h3"
         component="div"
         sx={{ m: 1, textAlign: "center" }}
       >
@@ -42,7 +42,7 @@ export const DndColumn = ({
             sx={{ overflow: "auto", height: "78vh", width: "100%" }}
           >
             {tasks.map((task, taskIndex) => (
-              <DndTask task={task} index={taskIndex} key={task.id} />
+              task ? <DndTask task={task} index={taskIndex} key={task.id} /> : ""
             ))}
             {provided.placeholder}
           </Box>

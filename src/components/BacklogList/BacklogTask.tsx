@@ -6,12 +6,12 @@ import { useSelector } from "react-redux";
 import { selectedSprintIdSelector } from "../../store/features/sprintsSlice";
 import { openEditTaskDialog } from "../../store/features/tasksDialogSlice";
 import { useAppDispatch } from "../../store/store";
-import { ScoketContext } from "../BoardTaskList/BoardTaskList";
+import { SocketContext } from "../BoardTaskList/BoardTaskList";
 import { Task } from "../Dnd/data";
 
 export const BacklogTask = ({ task }: { task: Task }) => {
   const dispatch = useAppDispatch();
-  const socket = React.useContext(ScoketContext);
+  const socket = React.useContext(SocketContext);
   const sprintId = useSelector(selectedSprintIdSelector);
 
   const handleEditTask = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -24,9 +24,10 @@ export const BacklogTask = ({ task }: { task: Task }) => {
     socket.emit("deleteTask", { taskId: task.id, sprintId });
   };
   return (
-    <Card
+    <>
+    {task && (<Card
       sx={{
-        maxWidth: "350px",
+        minWidth: "250px",
         height: 50,
         p: 3,
         m: 2,
@@ -59,6 +60,8 @@ export const BacklogTask = ({ task }: { task: Task }) => {
           <DeleteOutlinedIcon />
         </IconButton>
       </Box>
-    </Card>
+    </Card>)
+  }
+  </>
   );
 };

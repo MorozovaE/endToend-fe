@@ -1,21 +1,13 @@
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Input,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { AppBar, IconButton, Input, Toolbar, Typography } from "@mui/material";
 
 import Box from "@mui/material/Box";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { logOut } from "../../store/features/authSlice";
 import { useGetProjectQuery } from "../../store/features/projectsApiSlice";
 import {
   useDeleteSprintMutation,
@@ -29,9 +21,15 @@ import {
 } from "../../store/features/sprintsSlice";
 import { useAppDispatch } from "../../store/store";
 import { LangToggle } from "../LangToggle/LangToggle";
+import LogoutButton from "../LogoutButton/LogoutButton";
 
-export const BoardHeader = () => {
-  const { t } = useTranslation("boardPage");
+const drawerWidth = 240;
+
+export const BoardHeader = ({ mobileOpen, setMobileOpen }: { mobileOpen: boolean, setMobileOpen: any }) => {
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   const { projectId } = useParams();
   const dispatch = useAppDispatch();
@@ -47,10 +45,6 @@ export const BoardHeader = () => {
 
   const [deleteSprint] = useDeleteSprintMutation();
   const [editSprint] = useEditSprintMutation();
-
-  const handleLogout = () => {
-    dispatch(logOut());
-  };
 
   React.useEffect(() => {
     if (sprint) {
@@ -94,8 +88,24 @@ export const BoardHeader = () => {
 
   return (
     <Box sx={{ display: "flex", flexGrow: 1, width: "100%" }}>
-      <AppBar position="static">
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          // ml: { sm: `${drawerWidth}px` },
+         
+        }}
+      >
         <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
           <Box
             mr={"20px"}
             display={"block"}
@@ -165,11 +175,7 @@ export const BoardHeader = () => {
           </Box>
 
           <LangToggle />
-          <Box>
-            <Button color="inherit" onClick={handleLogout}>
-              {t("logout")}
-            </Button>
-          </Box>
+          <LogoutButton />
         </Toolbar>
       </AppBar>
     </Box>

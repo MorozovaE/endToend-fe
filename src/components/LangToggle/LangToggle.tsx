@@ -36,6 +36,9 @@ export const LangToggle = () => {
         ".MuiSvgIcon-root ": {
           fill: "white",
         },
+        ".MuiSelect-select": {
+          pl: 0,
+        },
       }}
       value={lang}
       onChange={(e) => {

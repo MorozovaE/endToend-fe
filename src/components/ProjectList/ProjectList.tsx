@@ -1,8 +1,9 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Box, Button, Container, Grid } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useGetIncomingRequestsQuery } from "../../store/features/project_memberApiSlice";
 import { useGetProjectsQuery } from "../../store/features/projectsApiSlice";
 import {
   openCreateProjectDialog,
@@ -19,8 +20,10 @@ export interface IProjectData {
   title: string;
   desc: string;
 }
+
 export const ProjectList = () => {
   const { t } = useTranslation("projectsPage");
+  const { data } = useGetIncomingRequestsQuery();
 
   const {
     data: projects = [],
@@ -48,7 +51,8 @@ export const ProjectList = () => {
 
   return (
     <Container sx={{ mt: 5 }}>
-      <Box display={"flex"} justifyContent={"end"}>
+      <Box display={"flex"} justifyContent={"space-between"} mb={"25px"}>
+        <Typography variant="h2">{t("header")}</Typography>
         <Button onClick={handleClickOpen}>
           {t("create-project")}
           <AddIcon />
@@ -62,16 +66,14 @@ export const ProjectList = () => {
         ""
       )}
 
-      <Grid container spacing={2}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
         {projects.map((el: any, i: number) => (
-          <Grid item md={4} key={i}>
-            <ProjectCard project={el} key={i} />
-          </Grid>
+          <ProjectCard project={el} key={i} />
         ))}
-      </Grid>
+      </Box>
 
-      <Box display={"flex"}>
-        <IncomingRequest />
+      <Box display={"flex"} flexWrap={"wrap"}>
+        {!!data?.length && <IncomingRequest />}
         <OutgoingRequest />
       </Box>
     </Container>

@@ -1,6 +1,6 @@
 export enum TaskStatus {
   TODO = "TODO",
-  IN_PROGRESS = "IN PROGRESS",
+  IN_PROGRESS = "IN_PROGRESS",
   DONE = "DONE",
 }
 
@@ -10,6 +10,7 @@ export type Task = {
   desc: string;
   status: TaskStatus;
   sprint: string;
+  // order ?
 };
 
 export const stringToStatus: Record<string, TaskStatus> = {

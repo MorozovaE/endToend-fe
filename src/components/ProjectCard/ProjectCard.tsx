@@ -74,102 +74,110 @@ export const ProjectCard = ({ project }: { project: IProject }) => {
   };
 
   return (
-    <Box>
-      <Card sx={{ maxWidth: 345, pt: 2, pl: 2, pb: 1, pr: 2 }}>
-        <CardActionArea onClick={openProject} component="a" sx={{ mb: "10px" }}>
-          <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "flex-start",
-                justifyContent: "space-between",
-              }}
-            >
-              <Box>
-                <Typography
-                  fontSize={"18px"}
-                  gutterBottom
-                  variant="h5"
-                  component="div"
-                >
-                  {project.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {project.desc}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "inline-flex",
-                  backgroundColor:
-                    roleName === "GUEST" ? "#0080ff57" : "#9ddf72ba",
-                  p: "3px",
-                  pr: "10px",
-                  borderRadius: "6px",
-                }}
-              >
-                <PersonIcon sx={{ p: "0", fontSize: "1.1rem" }} />
-                <Typography sx={{ fontSize: "14px" }}>{roleName}</Typography>
-              </Box>
-            </Box>
-          </CardContent>
-
+    <Card
+      sx={{
+        // width: "400px",
+        // maxWidth: {sm:  }},
+        flexGrow: { xs: 1, sm: 0 },
+        pt: 2,
+        pl: 2,
+        pb: 1,
+        pr: 2,
+      }}
+    >
+      <CardActionArea onClick={openProject} component="a" sx={{ mb: "10px" }}>
+        <CardContent>
           <Box
             sx={{
               display: "flex",
+              alignItems: "flex-start",
               justifyContent: "space-between",
             }}
           >
-            <CardActions>
-              <Button size="small">{t("open")}</Button>
-            </CardActions>
             <Box>
-              <IconButton onClick={handleEditProject}>
-                <EditOutlinedIcon />
-              </IconButton>
-              <IconButton onClick={handleDeleteProject}>
-                <DeleteOutlineOutlinedIcon />
-              </IconButton>
+              <Typography
+                fontSize={"18px"}
+                gutterBottom
+                variant="h4"
+                component="div"
+              >
+                {project.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {project.desc}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "inline-flex",
+                backgroundColor:
+                  roleName === "GUEST" ? "#0080ff57" : "#9ddf72ba",
+                p: "3px",
+                pr: "10px",
+                borderRadius: "6px",
+              }}
+            >
+              <PersonIcon sx={{ p: "0", fontSize: "1.1rem" }} />
+              <Typography sx={{ fontSize: "14px" }}>{roleName}</Typography>
             </Box>
           </Box>
-        </CardActionArea>
-        <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
-          <Button
-            onClick={handleCopyUuid}
-            sx={{
-              p: "0 0 0 10px",
-              backgroundColor: "#d7d7d799",
-              borderRadius: "6px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              color: "rgba(0, 0, 0, 0.54)",
+        </CardContent>
 
-              "&:hover": {
-                backgroundColor: "#d7d7d799",
-              },
-            }}
-          >
-            <Snackbar
-              open={open}
-              onClose={() => setOpen(false)}
-              autoHideDuration={2000}
-              message="UUID copied to clipboard"
-            />
-
-            <Typography
-              variant="body2"
-              fontSize={"12px"}
-              fontFamily={"monospace"}
-              color="text.secondary"
-              textTransform={"none"}
-            >
-              {project.uuid}
-            </Typography>
-            <ContentCopyIcon sx={{ width: "20px", p: "7px 10px" }} />
-          </Button>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <CardActions>
+            <Button size="small">{t("open")}</Button>
+          </CardActions>
+          <Box>
+            <IconButton onClick={handleEditProject}>
+              <EditOutlinedIcon />
+            </IconButton>
+            <IconButton onClick={handleDeleteProject}>
+              <DeleteOutlineOutlinedIcon />
+            </IconButton>
+          </Box>
         </Box>
-      </Card>
-    </Box>
+      </CardActionArea>
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <Button
+          onClick={handleCopyUuid}
+          sx={{
+            p: "0 0 0 10px",
+            backgroundColor: "#d7d7d799",
+            borderRadius: "6px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            color: "rgba(0, 0, 0, 0.54)",
+
+            "&:hover": {
+              backgroundColor: "#d7d7d799",
+            },
+          }}
+        >
+          <Snackbar
+            open={open}
+            onClose={() => setOpen(false)}
+            autoHideDuration={2000}
+            message="UUID copied to clipboard"
+          />
+
+          <Typography
+            variant="body2"
+            fontSize={"12px"}
+            fontFamily={"monospace"}
+            color="text.secondary"
+            textTransform={"none"}
+          >
+            {project.uuid}
+          </Typography>
+          <ContentCopyIcon sx={{ width: "20px", p: "7px 10px" }} />
+        </Button>
+      </Box>
+    </Card>
   );
 };

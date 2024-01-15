@@ -53,13 +53,12 @@ export const Login = () => {
       }).unwrap();
 
       if (userData) {
-        dispatch(setCredentials({ token: userData.token }));
+        dispatch(setCredentials({ token: userData.token , isEmailConfirmed: userData.emailConfirmed}));
         navigate("/projects");
       }
-      
     } catch (err: any) {
       console.log(err);
-      
+
       if (!err?.data) {
         setErrMsg("No Server Response");
       } else if (err.data?.statusCode === 400) {
@@ -78,12 +77,13 @@ export const Login = () => {
       style={{
         display: "flex",
         justifyContent: "center",
-        marginTop: "200px",
+        alignItems: "center",
+        height: "100vh",
       }}
     >
       <AuthHeader />
       <FormContainer formContext={formContext} onSuccess={onSubmit}>
-        <Typography variant="h3" mb={3}>
+        <Typography variant="h1" mb={3}>
           {t("headerLogin")}
         </Typography>
         <Grid container flexDirection={"column"}>

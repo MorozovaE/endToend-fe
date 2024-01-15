@@ -1,14 +1,14 @@
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
 } from "@mui/material";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { TextFieldElement } from "react-hook-form-mui";
@@ -20,11 +20,11 @@ import { useTranslation } from "react-i18next";
 import { useGetSprintsQuery } from "../../store/features/sprintApiSlice";
 import { selectedSprintIdSelector } from "../../store/features/sprintsSlice";
 import {
-  closeTaskDialog,
-  taskDialogOpenSelector,
+    closeTaskDialog,
+    taskDialogOpenSelector,
 } from "../../store/features/tasksDialogSlice";
 import { useAppDispatch } from "../../store/store";
-import { ScoketContext } from "../BoardTaskList/BoardTaskList";
+import { SocketContext } from "../BoardTaskList/BoardTaskList";
 import { columns } from "../Dnd/DndMain";
 import { IProjectData } from "../ProjectList/ProjectList";
 
@@ -40,7 +40,7 @@ export const CreateTaskDialog = () => {
   const [statusId, setStatusId] = React.useState("1");
   const [sprintId, setSprintId] = React.useState(selectedSprintId);
 
-  const socket = React.useContext(ScoketContext);
+  const socket = React.useContext(SocketContext);
   const { data: sprints } = useGetSprintsQuery(projectId);
   const BACKLOG_STRING = "Backlog";
 

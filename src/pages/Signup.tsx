@@ -6,6 +6,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   FormContainer,
@@ -31,6 +32,7 @@ export interface ISignupData {
 
 export const Signup = () => {
   const { t } = useTranslation("authPage");
+  const [errMsg, setErrMsg] = useState("");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -50,7 +52,7 @@ export const Signup = () => {
 
   const onSubmit: SubmitHandler<ISignupData> = async (data) => {
     localStorage.setItem("userEmail", data.email);
-    
+
     try {
       const userData = await signup({
         firstName: data.firstName,
@@ -60,25 +62,43 @@ export const Signup = () => {
         confirmPassword: data.confirmPassword,
       }).unwrap();
 
-      dispatch(setCredentials({ token: userData.token }));
-      navigate("/projects");
-    } catch (err) {
+      dispatch(
+        setCredentials({
+          token: userData.token,
+          isEmailConfirmed: userData.isEmailConfirmed,
+        })
+      );
+      navigate("/please-verify");
+
+    } catch (err: any) {
       console.log(err);
+
+      if (!err?.data) {
+        setErrMsg("No Server Response");
+      } else if (err.data?.statusCode === 400) {
+        setErrMsg("Missing email or password");
+      } else if (err.data.message === "User with this email exist.") {
+        setErrMsg("User with this email already exists");
+      } else if (err.data?.statusCode === 401) {
+        setErrMsg("Incorrect username or password.");
+      } else {
+        setErrMsg("Login Failed");
+      }
     }
   };
 
   return (
     <Container
-      maxWidth="lg"
       style={{
         display: "flex",
         justifyContent: "center",
-        marginTop: "170px",
+        alignItems: "center",
+        height: "100vh",
       }}
     >
       <AuthHeader />
       <FormContainer formContext={formContext} onSuccess={onSubmit}>
-        <Typography variant="h3" mb={3}>
+        <Typography variant="h1" mb={3} fontSize={"2rem"}>
           {t("headerSignup")}
         </Typography>
 
@@ -200,6 +220,7 @@ export const Signup = () => {
             }}
           />
         </Grid>
+        <Box>{errMsg}</Box>
         <Box sx={{ justifyContent: "center", display: "flex", mt: 3 }}>
           <Button
             variant="outlined"

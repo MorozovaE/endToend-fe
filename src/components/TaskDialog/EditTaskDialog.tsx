@@ -25,7 +25,7 @@ import {
   taskDialogOpenSelector,
 } from "../../store/features/tasksDialogSlice";
 import { useAppDispatch } from "../../store/store";
-import { ScoketContext } from "../BoardTaskList/BoardTaskList";
+import { SocketContext } from "../BoardTaskList/BoardTaskList";
 import { columns } from "../Dnd/DndMain";
 import { IProjectData } from "../ProjectList/ProjectList";
 import { ITask } from "./CreateTaskDialog";
@@ -34,7 +34,7 @@ export const EditTaskDialog = () => {
   const taskId = useSelector(selectedTaskIdSelector);
   const { t } = useTranslation("dialog");
 
-  const socket = React.useContext(ScoketContext);
+  const socket = React.useContext(SocketContext);
   const { projectId } = useParams();
   const selectedSprintId = useSelector(selectedSprintIdSelector);
   const { data: sprints } = useGetSprintsQuery(projectId);
@@ -114,6 +114,7 @@ export const EditTaskDialog = () => {
       desc: data.desc,
       sprintId,
       statusId,
+      order: null,
     };
     socket.emit("editTask", updatedTask);
     handleClose();

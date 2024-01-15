@@ -21,7 +21,7 @@ export const OutgoingRequest = () => {
 
   return (
     <Box flexGrow={1}>
-      <Typography sx={{ mt: 5, mb: 2 }} fontSize={"22px"}>
+      <Typography sx={{ mt: 5, mb: 2 }} variant="h2">
         {t("outgoing-requests")}
       </Typography>
 
